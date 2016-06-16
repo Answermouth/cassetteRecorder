@@ -1,4 +1,4 @@
-package recorder;
+package recorder.model;
 
 public class SoundLevel {
     static int SAMPLE_LENGTH = 96000;
@@ -19,7 +19,7 @@ public class SoundLevel {
         values = new long[SAMPLE_LENGTH][2];
         sums = new long[2];
         levels = new long[2];
-        sums[0] = sums[1] = 0;
+        sums[0] = sums[1] = Long.MAX_VALUE;
         levels[0] = levels[1] = Long.MAX_VALUE;
     }
     
@@ -70,7 +70,6 @@ public class SoundLevel {
     
     
     public void add(long value1, long value2) {
-        //System.out.println("add");
         if (nbrValues == SAMPLE_LENGTH) {
             long old1 = values[start][0];
             long old2 = values[start][1];
@@ -90,19 +89,18 @@ public class SoundLevel {
             nbrValues++;
             
             if (nbrValues == SAMPLE_LENGTH) {
-                System.out.println("full");
                 end--;
                 calculateSums();
                 calculateLevels();
-                System.out.println(sums[0]+" | "+sums[1]);
-                System.out.println(levels[0]+" | "+levels[1]);
-                System.out.println("full");
-                
             }
         }
     }
     
     public long[] getLevels() {
         return levels;
+    }
+    
+    public String toString() {
+        return levels[0] + " | " + levels[1];
     }
 }

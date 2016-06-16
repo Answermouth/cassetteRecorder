@@ -1,4 +1,4 @@
-package recorder;
+package recorder.controller;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -9,7 +9,7 @@ import java.io.*;
  */
 public class Recorder {
     // record duration, in milliseconds
-    static final long RECORD_TIME = 5000;  // 1 minute
+    static final long RECORD_TIME = 60000 * 45;  // 1 minute
  
     // path of the wav file
     File wavFile = new File("E:/Test/silence2.wav");
