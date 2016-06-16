@@ -5,8 +5,10 @@ import java.util.ArrayList;
 public class Playlist {
     
     private ArrayList<Title> titles;
+    private int side;
     
-    public Playlist() {
+    public Playlist(int side) {
+        this.side = side;
         titles = new ArrayList<Title>();
     }
     
@@ -20,6 +22,14 @@ public class Playlist {
     
     public int length() {
         return titles.size();
+    }
+    
+    public int getSide() {
+        return side;
+    }
+    
+    public void setSide(int side) {
+        this.side = side;
     }
     
     public String toString() {

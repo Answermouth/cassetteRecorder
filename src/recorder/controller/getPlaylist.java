@@ -11,22 +11,22 @@ import recorder.model.Title;
 
 public class getPlaylist {
     public static Playlist playlistForm() {
-        Playlist playlist = new Playlist();
+        Playlist playlist = new Playlist(2);
         
-        Title title = new Title("I Never Talk To Stangers", "Tom Waits", "Anthology of Tom Waits", "03:36");
+        Title title = new Title("I Never Talk To Stangers", "Tom Waits", "Anthology of Tom Waits", "2", "03:36");
         playlist.addTitle(title);
         
-        title = new Title("Somewhere(From West Side Story)", "Tom Waits", "Anthology of Tom Waits", "03:48");
+        title = new Title("Somewhere(From West Side Story)", "Tom Waits", "Anthology of Tom Waits", "2", "03:48");
         playlist.addTitle(title);
         
-        title = new Title("Burma Shave", "Tom Waits", "Anthology of Tom Waits", "06:30");
+        title = new Title("Burma Shave", "Tom Waits", "Anthology of Tom Waits", "2", "06:30");
         playlist.addTitle(title);
         
         return playlist;
     }
     
     public static Playlist load(String filename) {
-        Playlist playlist = new Playlist();
+        Playlist playlist = new Playlist(-1);
         
         File playlistCsv;
         BufferedReader reader;
@@ -38,23 +38,27 @@ public class getPlaylist {
             playlistCsv = new File(filename);
             reader = new BufferedReader(new FileReader(playlistCsv));
             
-            reader.readLine();
             line = reader.readLine();
             
+            playlist.setSide(Integer.parseInt(line));
+            String side = line;
+            
+            line = reader.readLine();
             while (line != null) {
                 // tant que l'on a pas atteind la fin d'un des 2 fichiers
 
                 scanner = new Scanner(line);
                 scanner.useDelimiter(",");
-                
+                                
                 name = scanner.next();
                 artists = scanner.next();
                 album = scanner.next();
                 length = scanner.next();
                 
-                playlist.addTitle(new Title(name, artists, album, length));
+                playlist.addTitle(new Title(name, artists, album, side, length));
                 
                 scanner.close();
+                line = reader.readLine();
             }
             reader.close();
         } catch (IOException e) {

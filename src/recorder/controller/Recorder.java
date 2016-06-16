@@ -12,7 +12,7 @@ public class Recorder {
     static final long RECORD_TIME = 60000 * 45;  // 1 minute
  
     // path of the wav file
-    File wavFile = new File("E:/Test/silence2.wav");
+    File wavFile = new File("E:/Test/side1.wav");
  
     // format of audio file
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;

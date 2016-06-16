@@ -1,22 +1,23 @@
 package recorder.model;
 
 public class Title {
-    private String name, artists, album;
+    private String name, artists, album, side;
     private long length;
     
-    public Title(String name, String artists, String album, String length) {
+    public Title(String name, String artists, String album, String side, String length) {
         this.name = name;
         this.artists = artists;
         this.album = album;
+        this.side = side;
         
         this.length = timeStringToLong(length);
     }
     
-    public Title(String name, String artists, String album, long length) {
+    public Title(String name, String artists, String album, String side, long length) {
         this.name = name;
         this.artists = artists;
         this.album = album;
-        
+        this.side = side;
         this.length = length;
     }
     
@@ -50,6 +51,14 @@ public class Title {
     
     public long getLength() {
         return length;
+    }
+    
+    public String getSide() {
+        return side;
+    }
+    
+    public void setSide(String side) {
+        this.side = side;
     }
     
     public void setLength(String length) {

@@ -9,20 +9,30 @@ import recorder.model.InstructionDecoupe;
 import recorder.model.Silence;
 import recorder.model.Playlist;
 
+import recorder.controller.GetInstructionDecoupe;
+
 public class bashWriter {
     static String PATH = "E:/Test/";
+    static double AMPLIFY = 8.4;
     
     public static void main(String[] args) {
         
-        String source = "E:/Test/RecordAudio.wav";
+        String source = "E:/Test/side2.wav";
         
         //new AudioWaveformCreator(source, "E:/Test/test.png");
         
         ArrayList<Silence> silences = Silence.getSilences(source);
         
-        Playlist playlist = getPlaylist.playlistForm();
+        /*
+        for (Silence s : silences) {
+            System.out.println(s);
+        }
+        */
         
-        ArrayList<InstructionDecoupe> IDList = InstructionDecoupe.getInstructionDecoupeStupid(playlist, silences);
+        //Playlist playlist = getPlaylist.playlistForm();
+        Playlist playlist = getPlaylist.load("E:/Test/playlist2.csv");
+        
+        ArrayList<InstructionDecoupe> IDList = GetInstructionDecoupe.getInstructionDecoupeStupid(playlist, silences);
         
         ArrayList<String> commands = dumpInstructionsDecoupe(IDList, "E:/Test/bash.bat", source);
         
@@ -54,8 +64,10 @@ public class bashWriter {
                     
             }
             
-            for (String cmd : commands)
+            for (String cmd : commands){
+                //System.out.println(cmd);
                 Runtime.getRuntime().exec(cmd);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,6 +97,9 @@ public class bashWriter {
                         "\"" +
                         " -metadata album=\"" + id.getAlbum() +
                         "\"" +
+                        " -metadata disc=\"" + id.getSide() +
+                        "\"" +
+                        " -af \"volume=" + AMPLIFY + "dB\"" +
                         " -codec:a libmp3lame -qscale:a 0 "+
                         "\""+
                         PATH+
@@ -94,7 +109,6 @@ public class bashWriter {
                         " - "+
                         id.getName()+
                         ".mp3\"";
-                //System.out.println(text);
                 textTotal.add(text);
                 ps.println(text);
             }

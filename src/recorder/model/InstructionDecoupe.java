@@ -1,22 +1,20 @@
 package recorder.model;
 
-import java.util.ArrayList;
-import recorder.model.Playlist;
+import recorder.RecorderConstants;
 
 public class InstructionDecoupe{
     
-    static int SAMPLE_RATE = 48000; 
-    static int MARGIN = SAMPLE_RATE/2;
-    
     long debut; // Temps en millisecondes
-    long fin; // Temps en millisecondes
+    long length; // Temps en millisecondes
+    int side;
     
     Title musique; 
     
-    public InstructionDecoupe(Title musique, long debut, long fin){
+    public InstructionDecoupe(Title musique, int side, long debut, long length){
         this.musique = musique;
         this.debut = debut;
-        this.fin = fin;
+        this.length = length;
+        this.side = side;
     }
     
     public String getName() {
@@ -36,64 +34,20 @@ public class InstructionDecoupe{
     }
     
     public static String samplesVersSSMMM(long valeur){
-        long millis = valeur/(SAMPLE_RATE/1000);
-        long secondes = valeur/SAMPLE_RATE;        
+        long millis = valeur/(RecorderConstants.SAMPLE_RATE/1000);
+        long secondes = valeur/RecorderConstants.SAMPLE_RATE;        
         return secondes+"."+millis;
     }
     
     public String getLength() {
-        return samplesVersSSMMM(musique.getLength());
+        return samplesVersSSMMM(length);
+    }
+    
+    public int getSide() {
+        return side;
     }
     
     public String toString() {
-        return musique.toString() + " | " + debut + " | " + fin;
-    }
-    
-    public static ArrayList<InstructionDecoupe> getInstructionDecoupeSmart(Playlist playlist, ArrayList<Silence> silences) {
-        ArrayList<InstructionDecoupe> IDList = new ArrayList<InstructionDecoupe>();
-        InstructionDecoupe ID;
-        long start = silences.get(0).getEnd();
-        long end = silences.get(1).getStart();
-        int i = 0;
-        
-        
-        for (Title t : playlist.getTitles()) {            
-            if (t.getLength()*SAMPLE_RATE + start > end - MARGIN && t.getLength()*SAMPLE_RATE + start < end + MARGIN) {
-                ID = new InstructionDecoupe(t, start, start-end);
-                i++;
-                if (i+1 < silences.size()) {
-                    start = silences.get(i).getEnd();
-                    end = silences.get(i+1).getStart();
-                }
-            } else {
-                i++;
-                if (i+1 < silences.size())
-                    end = silences.get(i+1).getStart();
-            }
-            
-            
-            
-        }
-        
-        for (InstructionDecoupe id : IDList)
-            System.out.println(id.toString());
-        
-        return IDList; 
-    }
-    
-    public static ArrayList<InstructionDecoupe> getInstructionDecoupeStupid(Playlist playlist, ArrayList<Silence> silences) {
-        ArrayList<InstructionDecoupe> IDList = new ArrayList<InstructionDecoupe>();
-        InstructionDecoupe ID;
-        long start;
-        long end;
-        
-        for (int i = 0; i < playlist.getTitles().size(); i++ ) {            
-            start = silences.get(i).getEnd();
-            end = silences.get(i+1).getStart();
-            ID = new InstructionDecoupe(playlist.getTitles().get(i), start, (end-start));
-            IDList.add(ID);
-        }
-                
-        return IDList; 
+        return musique.toString() + " | " + debut + " | " + length;
     }
 }

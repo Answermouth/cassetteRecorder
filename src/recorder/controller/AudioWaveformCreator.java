@@ -42,8 +42,8 @@ public class AudioWaveformCreator {
     SamplingGraph samplingGraph;
     String waveformFilename;
     Color imageBackgroundColor = new Color(20,20,20);
-    int w = 10000;
-    int h = 400;
+    int w = 1400;
+    int h = 500;
 
     public AudioWaveformCreator(String url, String waveformFilename) throws Exception {
         if (url != null) {
